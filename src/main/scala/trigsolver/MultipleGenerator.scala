@@ -10,7 +10,6 @@ class MultipleGenerator(val m:Int) extends Module {
     val comp = Output(UInt(1.W)) // C - should complement?
   })
 
-  // TODO: implement it!
   val zeros = 0.asSInt((m + 1).W)
   val aInv = io.a ^ -1.asSInt((m + 1).W)
 
