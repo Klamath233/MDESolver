@@ -8,6 +8,15 @@ class DigitSelector extends Module {
     val wsHat = Input(SInt(4.W))
     val d = Output(SInt(2.W))   // SD
   })
+  
+  val wConv = io.wcHat + io.wsHat
 
-  // TODO: implement it!
+  // FIXIT: can we do better by making this a comb network?
+  when (wConv <= -2.S) {       // 111.0 -1.0
+  	io.d := -1.S
+  } .elsewhen (wConv >= 1.S) { // 000.1 0.5
+  	io.d := 1.S
+  } .otherwise {
+  	io.d := 0.S
+  }
 }
