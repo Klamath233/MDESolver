@@ -3,7 +3,7 @@ package trigsolver
 import chisel3._
 
 class FiveToTwoAdder(val m:Int) extends Module {
-  val io = IO(new Bundle(){
+  val io = IO(new Bundle {
     val i0 = Input(SInt((m + 3).W))  // SSX.XXXX old sum
     val i1 = Input(SInt((m + 3).W))  // SXX.XXXC old carry (right most C is Cl or Cr)
     val i2 = Input(SInt((m + 3).W))  // SSX.XXXX left multiple
