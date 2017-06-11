@@ -2,7 +2,7 @@ package trigsolver
 
 import chisel3._
 
-class FiveToTwoModuel(val m:Int) extends Module {
+class FiveToTwoModule(val m:Int) extends Module {
   val io = IO(new Bundle {
     val i0 = Input(UInt(1.W))  
     val i1 = Input(UInt(1.W))
