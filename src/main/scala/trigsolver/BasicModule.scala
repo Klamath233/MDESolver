@@ -35,11 +35,11 @@ class BasicModule(val m: Int, val i: Int) extends Module {
   val carryReg = RegNext(Mux(initialized, vc, 0.asSInt((m + 3).W)))
  
 
-  val i0 = Mux(counter.value === 0.U, 0.S, mgLeft.io.mult.pad(m + 3))
-  val i1 = Mux(counter.value === 0.U, 0.S, mgRight.io.mult.pad(m + 3))
-  val i2 = Mux(counter.value === 0.U, io.b.pad(m + 3), sumReg)
-  val i3 = Mux(counter.value === 0.U, 0.S, Cat(carryReg(m + 2, 1), mgLeft.io.comp).asSInt())
-  val i4 = Mux(counter.value === 0.U, 0.S, Cat(~dReg.pad(3) + 1.S, mgRight.io.comp.pad(m)).asSInt())
+  val i0 = mgLeft.io.mult.pad(m + 3)
+  val i1 = mgRight.io.mult.pad(m + 3)
+  val i2 = sumReg
+  val i3 = Cat(carryReg(m + 2, 1), mgLeft.io.comp).asSInt()
+  val i4 = Cat(~dReg.pad(3) + 1.S, mgRight.io.comp.pad(m)).asSInt()
   val bb = io.b.pad(m + 3)
 
   val dLeft = io.dLeft
@@ -54,18 +54,18 @@ class BasicModule(val m: Int, val i: Int) extends Module {
   mgRight.io.d := io.dRight
   mgRight.io.a := io.aRight
 
-  adder.io.i0 := Mux(counter.value === 0.U, 0.S, mgLeft.io.mult.pad(m + 3))
-  adder.io.i1 := Mux(counter.value === 0.U, 0.S, mgRight.io.mult.pad(m + 3))
-  adder.io.i2 := Mux(counter.value === 0.U, io.b.pad(m + 3), sumReg)
-  adder.io.i3 := Mux(counter.value === 0.U, 0.S, Cat(carryReg(m + 2, 1), mgLeft.io.comp).asSInt())
-  adder.io.i4 := Mux(counter.value === 0.U, 0.S, Cat(~dReg.pad(3) + 1.S, mgRight.io.comp.pad(m)).asSInt())
+  adder.io.i0 := mgLeft.io.mult.pad(m + 3)
+  adder.io.i1 := mgRight.io.mult.pad(m + 3)
+  adder.io.i2 := sumReg
+  adder.io.i3 := Cat(carryReg(m + 2, 1), mgLeft.io.comp).asSInt()
+  adder.io.i4 := Cat(~dReg.pad(3) + 1.S, mgRight.io.comp.pad(m)).asSInt()
   adder.io.cIn1 := 0.U
   adder.io.cIn0 := 0.U
 
   sel.io.wcHat := vc(m + 2, m - 1).asSInt()
   sel.io.wsHat := vs(m + 2, m - 1).asSInt()
 
-  io.dOut := Mux(counter.value === 0.U, 0.S, dReg)
+  io.dOut := dReg
 
   when (~finished) {
     counter.inc()

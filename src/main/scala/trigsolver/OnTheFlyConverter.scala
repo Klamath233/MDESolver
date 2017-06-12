@@ -9,7 +9,7 @@ class OnTheFlyConverter(val m:Int) extends Module {
     val y = Output(SInt((m + 1).W))
   })
 
-  val counter = Counter(m + 1)
+  val counter = Counter(m + 2)
   val regQ = RegInit(0.asUInt((m + 1).W))
   val regQM = RegInit(1.asUInt((m + 1).W)) // Q[0] = QM[0] + 2^0
 
@@ -19,7 +19,7 @@ class OnTheFlyConverter(val m:Int) extends Module {
   val inQ = io.d(0)
   val inQM = ~io.d(0)
 
-  val finished = RegNext(counter.value === m.U)
+  val finished = RegNext(counter.value === (m + 1).U)
   val initialized = (counter.value =/= 0.U)
 
   when (initialized & ~finished) {
@@ -30,6 +30,6 @@ class OnTheFlyConverter(val m:Int) extends Module {
   when (~finished) {
     counter.inc()
   }
-  
+
   io.y := regQ.asSInt()
 }
