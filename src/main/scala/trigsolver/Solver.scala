@@ -11,13 +11,17 @@ class Solver(val m: Int, val n: Int) extends Module {
   })
 
   /* Instantiate n basic modules */
-  val modules = Array.fill(n)(Module(new BasicModule(m)))
+  val modules = new Array[BasicModule](n)
+
+  for (i <- 0 until n) {
+    modules(i) = Module(new BasicModule(m, i))
+  }
 
   /* Instantiate n on-the-fly converters */
   val converters = Array.fill(n)(Module(new OnTheFlyConverter(m)))
 
   /* Make the connections */
-  for (i <- 0 until (n - 1)) {
+  for (i <- 0 until n) {
     modules(i).io.b := io.bVec(i)
     modules(i).io.aLeft := io.leftAVec(i)
     modules(i).io.aRight := io.rightAVec(i)

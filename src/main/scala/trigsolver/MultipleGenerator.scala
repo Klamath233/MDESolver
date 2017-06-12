@@ -13,6 +13,6 @@ class MultipleGenerator(val m:Int) extends Module {
   val zeros = 0.asSInt((m + 1).W)
   val aInv = io.a ^ -1.asSInt((m + 1).W)
 
-  io.mult := Mux(io.d(0), zeros, Mux(io.d(1), aInv, io.a))
-  io.comp := io.d(1)
+  io.mult := Mux(~io.d(0), zeros, Mux(io.d(1), io.a, aInv))
+  io.comp := ~io.d(1) & io.d(0)
 }
